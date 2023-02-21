@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>NodejsBase</title>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="topnav">
+	  <a href="/">Home</a>
+	  <a class="active" href="/upload-file">upload file</a>
+	</div>
+
+	<div>
+	  	<form action="/upload-file-pic" method="POST" enctype="multipart/form-data">
+            <label for=""> Update file </label>
+            <input type="file" name="fileUpload" id="fileUpload" >
+            <button type="submit">upload</button>
+        </form>
+	</div>
+
+</body>
+</html>
