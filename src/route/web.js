@@ -20,6 +20,9 @@ const initWebRoute = (app) => {
 
 	router.post('/upload-file-pic', homeController.handleUploadFile);
 
+	router.post('/upload-multiple-images', homeController.handleMultipleUploadFile);
+	
+
 	router.get('/about', (req, res) => {
 		res.send(`Nguyen Quoc Anh Quan`);
 	});

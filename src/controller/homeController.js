@@ -14,6 +14,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+const imageFilter = function(req, file, cb) {
+	// Accept images only
+	if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+		req.fileValidationError = 'Only image files are allowed!';
+		return cb(new Error('Only image files are allowed!'), false);
+	}
+	cb(null, true);
+};
+
 let getHomepage = async (req, res) => {
 
 	const [rows, fields] = await pool.execute('SELECT * FROM users');
@@ -69,14 +78,6 @@ let uploadFilePage = async (req, res) => {
 }
 
 let handleUploadFile = async (req, res) => {
-	const imageFilter = function(req, file, cb) {
-		// Accept images only
-		if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-			req.fileValidationError = 'Only image files are allowed!';
-			return cb(new Error('Only image files are allowed!'), false);
-		}
-		cb(null, true);
-	};
 	 // 'profile_pic' is the name of our file input field in the HTML form
 	 let upload = multer({ storage: storage, fileFilter: imageFilter }).single('fileUpload');
 
@@ -102,6 +103,27 @@ let handleUploadFile = async (req, res) => {
 	 });
 }
 
+let handleMultipleUploadFile = async (req, res) => {
+	let upload = multer({ storage: storage, fileFilter: imageFilter }).array('multiple_images', 10);
+
+    upload(req, res, function(err) {
+        if (req.fileValidationError) {
+            return res.send(req.fileValidationError);
+        }
+
+        let result = "You have uploaded these images: <hr />";
+        const files = req.files;
+        let index, len;
+
+        // Loop through all the uploaded images and display them on frontend
+        for (index = 0, len = files.length; index < len; ++index) {
+            result += `<img src="/img/${req.files[index].filename}" width="300" style="margin-right: 20px;">`;
+        }
+        result += '<hr/><a href="./upload-file">Upload more images</a>';
+        res.send(result);
+    });
+}
+
 module.exports = {
 	getHomepage,
 	getDetailUser,
@@ -110,5 +132,6 @@ module.exports = {
 	editUser,
 	updateUser,
 	uploadFilePage,
-	handleUploadFile
+	handleUploadFile,
+	handleMultipleUploadFile
 }
