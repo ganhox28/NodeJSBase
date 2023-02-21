@@ -1,6 +1,6 @@
 {
   "name": "nodejsbase",
-  "private": "true",
+  "private": true,
   "version": "1.0.0",
   "description": "NodeJsLearn",
   "main": "index.js",
